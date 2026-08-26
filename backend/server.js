@@ -1,8 +1,10 @@
-const pool = require("./config/db");
 require("dotenv").config();
 
 const cors = require("cors");
 const express = require("express");
+const pool = require("./config/db");
+const authRoutes = require("./routes/authRoutes");
+
 const app = express();
 
 app.use(
@@ -18,6 +20,8 @@ app.use(
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
+
+app.use("/auth", authRoutes);
 
 app.get("/", (req, res) => {
     res.send("Welcome to Home Services Marketplace API!");
