@@ -4,7 +4,7 @@ const {
     signup,
     login,
     getMe,
-} = require("../controllers/authController");
+} = require("../controllers/authControllers");
 
 const {
     authenticate,
@@ -13,7 +13,7 @@ const {
 const {
     validateSignup,
     validateLogin,
-} = require("../validators/authValidator");
+} = require("../middleware/validation/authValidation");
 
 const router = express.Router();
 
