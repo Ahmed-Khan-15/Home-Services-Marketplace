@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../services/api";
+import { useAuth } from "../context/AuthContext";
 
 function Signup() {
     const navigate = useNavigate();
+    const { signup } = useAuth();
 
     const [formData, setFormData] = useState({
         name: "",
@@ -24,39 +25,25 @@ function Signup() {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        setError("");
-        setLoading(true);
+    setError("");
+    setLoading(true);
 
-        try {
-            const response = await api.post(
-                "/auth/signup",
-                formData
-            );
+    try {
+        await signup(formData);
 
-            localStorage.setItem(
-                "token",
-                response.data.token
-            );
+        navigate("/");
 
-            localStorage.setItem(
-                "user",
-                JSON.stringify(response.data.user)
-            );
-
-            navigate("/");
-
-        } catch (error) {
-            setError(
-                error.response?.data?.message ||
-                "Something went wrong. Please try again."
-            );
-        } finally {
-            setLoading(false);
-        }
-    };
-
+    } catch (error) {
+        setError(
+            error.response?.data?.message ||
+            "Something went wrong. Please try again."
+        );
+    } finally {
+        setLoading(false);
+    }
+};
     return (
         <div className="auth-page">
 

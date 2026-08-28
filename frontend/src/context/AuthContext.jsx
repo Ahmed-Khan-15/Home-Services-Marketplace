@@ -25,14 +25,8 @@ export function AuthProvider({ children }) {
 
                 setUser(response.data.user);
 
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(response.data.user)
-                );
-
             } catch (error) {
                 localStorage.removeItem("token");
-                localStorage.removeItem("user");
                 setUser(null);
 
             } finally {
@@ -43,17 +37,49 @@ export function AuthProvider({ children }) {
         fetchCurrentUser();
     }, []);
 
+    const login = async (phone, password) => {
+        const response = await api.post("/auth/login", {
+            phone,
+            password,
+        });
+
+        localStorage.setItem(
+            "token",
+            response.data.token
+        );
+
+        setUser(response.data.user);
+
+        return response.data;
+    };
+
+    const signup = async (formData) => {
+        const response = await api.post(
+            "/auth/signup",
+            formData
+        );
+
+        localStorage.setItem(
+            "token",
+            response.data.token
+        );
+
+        setUser(response.data.user);
+
+        return response.data;
+    };
+
     const logout = () => {
         localStorage.removeItem("token");
-        localStorage.removeItem("user");
         setUser(null);
     };
 
     const value = {
         user,
-        setUser,
         loading,
         isAuthenticated: !!user,
+        login,
+        signup,
         logout,
     };
 
