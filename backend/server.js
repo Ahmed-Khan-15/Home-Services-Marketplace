@@ -1,9 +1,9 @@
-require("dotenv").config();
+import "dotenv/config";
 
-const cors = require("cors");
-const express = require("express");
-const pool = require("./config/db");
-const authRoutes = require("./routes/authRoutes");
+import cors from "cors";
+import express from "express";
+
+import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 
@@ -11,9 +11,9 @@ app.use(
     cors({
         origin: [
             "http://localhost:5173",
-            process.env.CLIENT_URL
+            process.env.CLIENT_URL,
         ],
-        credentials: true
+        credentials: true,
     })
 );
 

@@ -1,69 +1,72 @@
-const Joi = require("joi");
+import { z } from "zod";
 
-const signupSchema = Joi.object({
-    name: Joi.string()
+const signupSchema = z.object({
+    name: z
+        .string()
         .min(2)
-        .max(100)
-        .required(),
+        .max(100),
 
-    email: Joi.string()
+    email: z
+        .string()
         .email()
         .max(255)
-        .allow(null, "")
-        .optional(),
+        .nullable()
+        .optional()
+        .or(z.literal("")),
 
-    phone: Joi.string()
+    phone: z
+        .string()
         .min(7)
-        .max(20)
-        .required(),
+        .max(20),
 
-    password: Joi.string()
+    password: z
+        .string()
         .min(8)
-        .max(100)
-        .required(),
+        .max(100),
 
-    role: Joi.string()
-        .valid("customer", "professional")
-        .required(),
+    role: z
+        .enum(["customer", "professional"]),
 });
 
+const loginSchema = z.object({
+    phone: z
+        .string()
+        .min(1),
 
-const loginSchema = Joi.object({
-    phone: Joi.string()
-        .required(),
-
-    password: Joi.string()
-        .required(),
+    password: z
+        .string()
+        .min(1),
 });
-
 
 const validateSignup = (req, res, next) => {
-    const { error } = signupSchema.validate(req.body);
+    const result = signupSchema.safeParse(req.body);
 
-    if (error) {
+    if (!result.success) {
         return res.status(400).json({
-            message: error.details[0].message,
+            message: result.error.issues[0].message,
         });
     }
 
+    req.body = result.data;
+
     next();
 };
-
 
 const validateLogin = (req, res, next) => {
-    const { error } = loginSchema.validate(req.body);
+    const result = loginSchema.safeParse(req.body);
 
-    if (error) {
+    if (!result.success) {
         return res.status(400).json({
-            message: error.details[0].message,
+            message: result.error.issues[0].message,
         });
     }
+
+    req.body = result.data;
 
     next();
 };
 
-
-module.exports = {
+export {
     validateSignup,
     validateLogin,
 };

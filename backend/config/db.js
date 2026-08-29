@@ -1,6 +1,4 @@
-require("dotenv").config();
-
-const { Pool } = require("pg");
+import { Pool } from "pg";
 
 const pool = new Pool({
     user: process.env.DB_USER,
@@ -14,4 +12,4 @@ pool.on("error", (err) => {
     console.error("Unexpected PostgreSQL pool error:", err);
 });
 
-module.exports = pool;
+export default pool;

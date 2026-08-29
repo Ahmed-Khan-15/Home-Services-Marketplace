@@ -1,19 +1,19 @@
-const express = require("express");
+import express from "express";
 
-const {
+import {
     signup,
     login,
     getMe,
-} = require("../controllers/authControllers");
+} from "../controllers/authControllers.js";
 
-const {
+import {
     authenticate,
-} = require("../middleware/authMiddleware");
+} from "../middleware/authMiddleware.js";
 
-const {
+import {
     validateSignup,
     validateLogin,
-} = require("../middleware/validation/authValidation");
+} from "../middleware/validation/authValidation.js";
 
 const router = express.Router();
 
@@ -35,4 +35,4 @@ router.get(
     getMe
 );
 
-module.exports = router;
+export default router;
