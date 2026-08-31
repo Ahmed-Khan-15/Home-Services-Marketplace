@@ -5,6 +5,7 @@ import express from "express";
 
 import authRoutes from "./routes/authRoutes.js";
 import serviceCategoryRoutes from "./routes/serviceCategoryRoutes.js";
+import serviceRoutes from "./routes/serviceRoutes.js";
 
 const app = express();
 
@@ -24,6 +25,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use("/auth", authRoutes);
 app.use("/categories", serviceCategoryRoutes);
+app.use("/services", serviceRoutes);
 
 app.get("/", (req, res) => {
     res.send("Welcome to Home Services Marketplace API!");

@@ -1,24 +1,14 @@
-const authMiddleware = require("../middleware/authMiddleware");
-const validateRecurringTransaction = require("../middleware/validation/recurringTransactionValidation");
-const express = require("express");
+import express from "express";
+
+import {
+    getServicesByCategory,
+} from "../controllers/serviceControllers.js";
 
 const router = express.Router();
 
-const { getRecurringTransactions,
-    createRecurringTransaction,
-    getRecurringTransactionById,
-    updateRecurringTransaction,
-    deleteRecurringTransaction,
-    generateRecurringTransactions
-} = require("../controllers/recurringTransactionControllers");
+router.get(
+    "/category/:categoryId",
+    getServicesByCategory
+);
 
-router.get("/", authMiddleware, getRecurringTransactions);
-router.get("/generate", authMiddleware, generateRecurringTransactions);
-router.get("/:id", authMiddleware, getRecurringTransactionById);
-
-router.post("/", authMiddleware, validateRecurringTransaction, createRecurringTransaction);
-router.put("/:id", authMiddleware, validateRecurringTransaction, updateRecurringTransaction);
-
-router.delete("/", authMiddleware, deleteRecurringTransaction);
-
-module.exports = router;
+export default router;
